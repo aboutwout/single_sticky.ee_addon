@@ -51,7 +51,7 @@ class Single_sticky
     $weblog_id = $IN->GBL('weblog_id', 'POST');
     $is_sticky = $IN->GBL('expiration_date', 'POST');
     
-    if(!$weblog_id || $autosave === true || ) return;
+    if(!$weblog_id || $autosave === true || !$is_sticky) return;
 
   }
   // END set_expiration_date
