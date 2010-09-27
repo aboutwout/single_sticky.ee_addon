@@ -9,6 +9,9 @@ $L = array(
 	'single_sticky_extension_description' =>
 	"Enforce the presence of only one sticky per weblog.",
 
+  'single_sticky_enable' =>
+  "Enable Single Sticky for this weblog?",
+
   // END
   '' => ''
 );

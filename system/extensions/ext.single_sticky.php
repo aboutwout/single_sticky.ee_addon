@@ -49,10 +49,12 @@ class Single_sticky
     global $IN;
     
     $weblog_id = $IN->GBL('weblog_id', 'POST');
-    $is_sticky = $IN->GBL('expiration_date', 'POST');
+    $is_sticky = ( $IN->GBL('sticky', 'POST') == 'y');
     
     if(!$weblog_id || $autosave === true || !$is_sticky) return;
-
+    
+    echo "<pre>".print_r($_POST, true)."</pre>";
+    exit;
   }
   // END set_expiration_date
   
@@ -60,16 +62,57 @@ class Single_sticky
   * Modifies control panel html by adding the Auto Expire
   * settings panel to Admin > Weblog Administration > Weblog Management > Edit Weblog
   */
-  function settings()
+  function settings_form($settings=array())
   {
-    global $IN, $DB, $DSP, $LANG;
+    global $DSP, $LANG, $IN, $DB;
+      
+    $DSP->crumbline = TRUE;
     
-    $settings['enable']   = array('r', array('yes' => "yes", 'no' => "no"), 'no');
+    $DSP->title  = $LANG->line('single_sticky_extension_name');
+    $DSP->crumb  = $DSP->anchor(BASE.AMP.'C=admin'.AMP.'area=utilities', $LANG->line('utilities')).
+    $DSP->crumb_item($DSP->anchor(BASE.AMP.'C=admin'.AMP.'M=utilities'.AMP.'P=extensions_manager', $LANG->line('extensions_manager')));
+    $DSP->crumb .= $DSP->crumb_item($LANG->line('single_sticky_extension_name'));
+  
+    $DSP->right_crumb($LANG->line('disable_extension'), BASE.AMP.'C=admin'.AMP.'M=utilities'.AMP.'P=toggle_extension_confirm'.AMP.'which=disable'.AMP.'name=single_sticky');
+		$DSP->body .= $DSP->heading($LANG->line('single_sticky_extension_name'));
+
+    $weblog_query = $DB->query("SELECT weblog_id, blog_title FROM exp_weblogs");
+
+    $weblogs = array();
+      
+    foreach($weblog_query->result as $row) {          
+  
+      $weblogs[] = array(
+        'id' => $row['weblog_id'],
+        'title' => $row['blog_title'],
+        'enabled' => ( isset($settings[$row['weblog_id']]) ) ? $settings[$row['weblog_id']] : 'n'
+      );
+    }
     
-    return $settings;
+    $vars = array(
+      'weblogs' => $weblogs,
+      'settings_saved' => $_SERVER['REQUEST_METHOD']=='POST'
+    );
     
+    $DSP->body .= $DSP->view(PATH_EXT.'single_sticky/views/settings_form.php', $vars, TRUE);
+
   }
   // END settings
+
+  /**
+  * Save settings
+  */
+  function save_settings()
+  {
+    global $DB;
+    
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ss_enabled']) )
+    {
+      $this->settings = $_POST['ss_enabled'];
+      $DB->query($DB->update_string('exp_extensions', array('settings' => serialize($this->settings)), 'class = "'.get_class($this).'"'));    
+    }
+    
+  }
 
   
   
