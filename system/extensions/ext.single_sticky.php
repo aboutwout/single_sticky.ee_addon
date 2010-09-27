@@ -21,7 +21,7 @@ class Single_sticky
   
   public $name                = 'Single Sticky';
   public $version             = 0.1;
-  public $description         = "Make sure there is only one sticky per weblog.";
+  public $description         = "Enforce the presence of only one sticky per weblog.";
   public $settings_exist      = 'y';
   public $docs_url            = '';
 

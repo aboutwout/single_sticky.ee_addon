@@ -7,7 +7,7 @@ $L = array(
 	"Single Sticky",
 
 	'single_sticky_extension_description' =>
-	"Make sure there is only one sticky per weblog",
+	"Enforce the presence of only one sticky per weblog.",
 
   // END
   '' => ''

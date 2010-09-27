@@ -1,6 +1,6 @@
 # Single Sticky
 
-Single Sticky enforces that there is only 1 sticky per weblog.
+Single Sticky enforces that there is only one sticky per weblog.
 
 ## Info
 
