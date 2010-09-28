@@ -46,17 +46,21 @@ class Single_sticky
   function check_entries($weblog_id=0, $autosave=false)
   {
     
-    global $IN;
+    global $IN, $DB, $SESS;
     
     $weblog_id = $IN->GBL('weblog_id', 'POST');
     $is_sticky = ( $IN->GBL('sticky', 'POST') == 'y');
     
-    if(!$weblog_id || $autosave === true || !$is_sticky) return;
+    $entry_id = $IN->GBL('entry_id', 'POST');
+    $author = $SESS->userdata['member_id'];
     
-    echo "<pre>".print_r($_POST, true)."</pre>";
-    exit;
+    if(!$weblog_id || $autosave === true || !$is_sticky) return;
+        
+//    $DB->query($DB->update_string('exp_weblog_titles', array('sticky' => 'n'), "weblog_id='$weblog_id' AND sticky='y' AND entry_id <> '$entry_id'"));
+      $DB->query($DB->update_string('exp_weblog_titles', array('sticky' => 'n'), "weblog_id='$weblog_id' AND sticky='y' AND entry_id <> '$entry_id' && author_id='$author'"));
+  
   }
-  // END set_expiration_date
+  // END check_entries
   
   /**
   * Modifies control panel html by adding the Auto Expire
