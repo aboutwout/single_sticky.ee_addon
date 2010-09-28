@@ -157,10 +157,6 @@ class Single_sticky
       $sql[] = $DB->insert_string('exp_extensions', $data);
     }
 
-    // add extension table
-    $sql[] = 'DROP TABLE IF EXISTS `exp_auto_expire`';
-    $sql[] = "CREATE TABLE `exp_auto_expire` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `weblog_id` INT NOT NULL UNIQUE KEY, `time_diff` INT NOT NULL, `time_unit` INT NOT NULL, `status` INT NOT NULL)";
-
     // run all sql queries
     foreach ($sql as $query) {
       $DB->query($query);
