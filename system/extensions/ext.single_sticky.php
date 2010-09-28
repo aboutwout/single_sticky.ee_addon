@@ -56,9 +56,8 @@ class Single_sticky
     
     if(!$weblog_id || $autosave === true || !$is_sticky) return;
         
-//    $DB->query($DB->update_string('exp_weblog_titles', array('sticky' => 'n'), "weblog_id='$weblog_id' AND sticky='y' AND entry_id <> '$entry_id'"));
-      $DB->query($DB->update_string('exp_weblog_titles', array('sticky' => 'n'), "weblog_id='$weblog_id' AND sticky='y' AND entry_id <> '$entry_id' && author_id='$author'"));
-  
+    $DB->query($DB->update_string('exp_weblog_titles', array('sticky' => 'n'), "weblog_id='$weblog_id' AND sticky='y' AND entry_id <> '$entry_id'"));
+    
   }
   // END check_entries
   
